@@ -1,0 +1,22 @@
+<mat-card class="login-container">
+    <mat-card-title>Iniciar sesión</mat-card-title>
+    <mat-progress-bar mode="indeterminate" class="login-bar" color="accent" *ngIf="loading"></mat-progress-bar>
+    <mat-card-content>
+        <form class="form" #loginForm="ngForm">
+            <mat-form-field class="full-width">
+                <mat-label>E-mail</mat-label>
+                <input matInput placeholder="e-mail" name="email" [(ngModel)]="user.email" required />
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Contraseña</mat-label>
+                <input matInput placeholder="contraseña" type="password" name="password" [(ngModel)]="user.password" required />
+            </mat-form-field>
+            <button mat-flat-button (click)="login()" [disabled]="loginForm.invalid">Log in</button>
+        </form>
+    </mat-card-content>
+    <mat-card-footer><a href="">Registrarse</a></mat-card-footer>
+</mat-card>
+
+<img class="logo" src="assets/icon.svg">
+
+

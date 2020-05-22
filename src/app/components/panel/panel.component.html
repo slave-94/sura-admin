@@ -1,0 +1,33 @@
+<ng-container>
+  <mat-toolbar class="header">
+    <img src="assets/logo.png" class="logo" />
+    <label>Administración</label>
+    <div class="btn-exit">
+      admin
+      <button mat-icon-button (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <mat-sidenav-container class="container">
+    <mat-sidenav #sidenav mode="side" opened class="side-nav" [fixedInViewport]="false" [fixedTopGap]="0"
+      [fixedBottomGap]="0">
+      <div class="side-options">
+        <button mat-stroked-button class="btn-opc" (click)="setInfoComponent()">Información</button>
+        <button mat-stroked-button class="btn-opc" (click)="setEventosComponent()">Eventos</button>
+        <button mat-stroked-button class="btn-opc" (click)="setGaleriaComponent()">Galería</button>
+      </div>
+    </mat-sidenav>
+    
+    <mat-sidenav-content>
+      <div class="main-content">
+        <ng-template section-host></ng-template>
+      </div>
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+
+  <mat-toolbar class="footer">
+    Footer content
+  </mat-toolbar>
+</ng-container>
