@@ -1,0 +1,26 @@
+@import '../../variables.scss';
+
+.loader {
+    width: $gutter * 32;
+}
+
+.input {
+    width: 100%;
+}
+
+.footer {
+    float: right;
+    .btn {
+        margin-left: $gutter;
+    }
+}
+
+.header {
+    .input-key-value {
+        margin-right: $gutter * 3;
+    }
+    .btn-add {
+        float: right;
+        color: $color-gray-light;
+    }
+}

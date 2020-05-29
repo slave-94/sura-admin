@@ -1,14 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+@import './app//variables.scss';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .form {
-    min-width: 150px;
-    max-width: 500px;
-    width: 100%;
-  }
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
   
-  .full-width {
-    width: 100%;
-  }
+.full-width {
+  width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: $color-gray-light;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $color-gray-dark;
+  border-radius: 5px; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $color-black-light;
+}
