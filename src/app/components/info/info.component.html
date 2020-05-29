@@ -1,4 +1,35 @@
- <mat-card class="card">
-    <mat-card-title>item</mat-card-title>
-    <mat-card-content>contenido</mat-card-content>
-</mat-card>
+<form class="search-bar">
+    <mat-form-field class="input">
+        <mat-label>Buscar sección</mat-label>
+        <input matInput placeholder="ej. hoteles" [(ngModel)]="collectionName" name="collection"/>
+    </mat-form-field>
+    <button mat-mini-fab class="icon" (click)="search()">
+        <mat-icon>search</mat-icon>
+    </button>
+</form>
+
+<mat-divider></mat-divider>
+
+<mat-grid-list cols="3">
+    <mat-grid-tile *ngFor="let item of items; let i = index">
+        <mat-card class="item">
+            <mat-card-title class="title">{{item.data.nombre}}</mat-card-title>
+            <mat-card-content>
+                <div class="body">
+                    <img class="img" src="{{item.data.imagen?item.data.imagen:item.data.foto}}" />
+                </div>
+                <div class="footer">
+                    <button mat-mini-fab color="accent" (click)="editItem(i)">
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+                    <!-- <button mat-mini-fab color="primary">
+                        <mat-icon>edit</mat-icon>
+                    </button> -->
+                    <button mat-mini-fab color="warn" class="btn-delete" (click)="deleteItem(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>

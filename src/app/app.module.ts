@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { MatGridListModule } from '@angular/material/grid-list'
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field'
@@ -15,6 +16,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { LoginComponent } from './components/login/login.component';
 import { PanelComponent } from './components/panel/panel.component';
@@ -37,11 +40,14 @@ const config = {
 
 import { LoginService } from './components/login/login.service';
 import { SectionService } from './components/panel/section.service';
+import { InfoService } from './components/info/info.service';
 
 import { InfoComponent } from './components/info/info.component';
 import { EventosComponent } from './components/eventos/eventos.component';
 import { GaleriaComponent } from './components/galeria/galeria.component';
 import { SectionDirective } from './components/panel/section.directive';
+
+import { DialogComponent } from './shared/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +57,8 @@ import { SectionDirective } from './components/panel/section.directive';
     InfoComponent,
     EventosComponent,
     GaleriaComponent,
-    SectionDirective
+    SectionDirective,
+    DialogComponent
   ],
   entryComponents: [
     LoginComponent,
@@ -62,6 +69,7 @@ import { SectionDirective } from './components/panel/section.directive';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatGridListModule,
     MatSidenavModule,
     MatToolbarModule,
     MatCardModule,
@@ -71,6 +79,8 @@ import { SectionDirective } from './components/panel/section.directive';
     MatIconModule,
     MatSnackBarModule,
     MatProgressBarModule,
+    MatDialogModule,
+    MatDividerModule,
     FormsModule,
     AngularFireModule.initializeApp(config),
     AngularFirestoreModule,
@@ -78,7 +88,7 @@ import { SectionDirective } from './components/panel/section.directive';
     AngularFireDatabaseModule,
     AngularFireStorageModule,
   ],
-  providers: [LoginService, SectionService],
+  providers: [LoginService, SectionService, InfoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
