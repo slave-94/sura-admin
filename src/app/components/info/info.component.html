@@ -7,6 +7,13 @@
         <mat-icon>search</mat-icon>
     </button>
 </form>
+<div *ngIf="hasItems" class="add-item">
+    <mat-label class="label-item">Agregar nuevo elemento a {{collectionName}}</mat-label>
+    <button mat-mini-fab (click)="createItem()">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>
+
 
 <mat-divider></mat-divider>
 

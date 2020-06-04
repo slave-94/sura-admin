@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 
 import { Observable } from 'rxjs';
 
-import { InfoService } from './info.service';
+import { AdminService } from '../../shared/services/admin.service';
 
-import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { InfoItem } from 'src/app/shared/model/info-item.model';
 import { FormItemDialog } from 'src/app/shared/model/form.dialog.model';
+
+import { DIAG_MSGS } from '../../shared/constants/messages.const';
+import { DialogService } from 'src/app/shared/dialog/dialog.service';
 
 @Component({
   selector: 'app-info',
@@ -18,12 +19,13 @@ export class InfoComponent implements OnInit {
 
   public collectionName = '';
   public loading = true;
+  public hasItems = false;
 
   public items: Observable<InfoItem[]>;
 
   constructor(
-    private _dialog: MatDialog,
-    private _infoService: InfoService
+    private _adminService: AdminService,
+    private _dialogService: DialogService
   ) { }
 
   ngOnInit(): void {
@@ -31,27 +33,23 @@ export class InfoComponent implements OnInit {
 
   search() {
     this.openLoadingDialog();
-    this._infoService.getCollection(this.collectionName).subscribe(
+    this._adminService.getCollection(this.collectionName).subscribe(
       result => {
         this.items = result;
-        this.closeLoadingDialog();        
+        this.closeLoadingDialog();
+        if(result.length > 0) {
+          this.hasItems = true;
+        }
       }
     );
   }
 
   openLoadingDialog(): void {
-    this._dialog.open(DialogComponent, {
-      data: {
-        title: 'Cargando',
-        content: {},
-        type: 'loader'
-      },
-      disableClose: true
-    });
+    this._dialogService.buildDialog('Cargando', {}, 'loader', true);
   }
 
   closeLoadingDialog(): void {
-    this._dialog.closeAll();
+    this._dialogService.closeDialog();
   }
 
   editItem(index) {
@@ -59,44 +57,57 @@ export class InfoComponent implements OnInit {
     const itemSelectedId = this.items[index].id;
     const itemSelectedData = this.items[index].data;
     const itemKeys = Object.keys(itemSelectedData);
-    for(var key of itemKeys) {
+    for (var key of itemKeys) {
       formItems.push(new FormItemDialog(key, itemSelectedData[key]));
     }
-    const dialogRef = this._dialog.open(DialogComponent, {
-      data: {
-        title: itemSelectedData.nombre,
-        content: formItems,
-        type: 'form'
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.updateInfo(itemSelectedId, result);
+    this._dialogService.buildDialog(itemSelectedData.nombre, formItems, 'form')
+    .subscribe(result => {
+      if (result) {
+        this.updateItem(itemSelectedId, result);
       }
     });
   }
 
-  updateInfo(id, data) {
+  createItem() {
+    const formItems = [];
+    this._dialogService.buildDialog('Nuevo item', formItems, 'form')
+    .subscribe(result => {
+      if (result) {
+        this.openLoadingDialog();
+        const dataConverted = this._adminService.convertToJSON(result);
+        this._adminService.createItem(this.collectionName, dataConverted).then(
+          () => {
+            this.closeLoadingDialog();
+          }
+        );
+      }
+    });
+  }
+
+  updateItem(id, data) {
     this.openLoadingDialog();
-    const dataConverted = this._infoService.convertToJSON(data);
-    this._infoService.updateItemData(this.collectionName, id, dataConverted).then(
-      result => {
+    const dataConverted = this._adminService.convertToJSON(data);
+    this._adminService.updateItem(this.collectionName, id, dataConverted).then(
+      () => {
         this.closeLoadingDialog();
       }
     );
   }
 
   deleteItem(index) {
-    const itemSelectedName = this.items[index].data.nombre;
-    const dialogRef = this._dialog.open(DialogComponent, {
-      data: {
-        title: '¿Eliminar elemento?',
-        content: `La información de ${itemSelectedName} será eliminada permanentemente`,
-        type: 'confirmation'
+    const itemSelectedId = this.items[index].id;
+    const itemSelectedData = this.items[index].data;
+    this._dialogService.buildDialog('¿Eliminar elemento?', 
+    `${DIAG_MSGS.DEL_MSG_INI} ${itemSelectedData.nombre} ${DIAG_MSGS.DEL_MSG_FIN}`, 'confirmation')
+    .subscribe(result => {
+      if(result) {
+        this.openLoadingDialog();
+        this._adminService.deleteItem(this.collectionName, itemSelectedId).then(
+          () => {
+            this.closeLoadingDialog();
+          }
+        );
       }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
     });
   }
 }

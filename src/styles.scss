@@ -14,6 +14,33 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   width: 100%;
 }
 
+.item {
+  width: $gutter * 22;
+  height: $gutter * 18;
+  margin-bottom: $gutter * 2;
+  .title {
+      font-size: 12pt;
+      word-wrap: break-word;
+      height: $gutter * 3;
+  }
+  .body {
+      margin: auto;
+      text-align: center;
+      .img {
+          width: $gutter * 8;
+          height: $gutter * 8;
+          border-radius: $gutter;
+      }
+  }
+  .footer {
+      text-align: right;
+      .btn-delete {
+          margin-left: $gutter;
+          background-color: $color-pink-dark;
+      }
+  }
+}
+
 ::-webkit-scrollbar {
   width: 5px;
 }
