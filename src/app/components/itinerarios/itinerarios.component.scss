@@ -1,0 +1,15 @@
+@import '../../variables.scss';
+
+.header {
+    .msg-left {
+        margin-top: 8px;
+        width: 90%;
+        color: black;
+        font-size: 32px;
+    }
+    .back-button {
+        color: $color-gray-light;
+        float: right;
+        background: $color-gray-dark;
+    }
+}

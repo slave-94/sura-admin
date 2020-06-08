@@ -16,6 +16,14 @@ export const GALERIA_MSGS = {
   DELETE_SUCCESS: "Imagen eliminada exitosamente"
 }
 
+export const EVENTOS_MSGS = {
+  DEL_MSG_INI: "El evento",
+  DEL_MSG_FIN: "será eliminado",
+  CREATE_SUCCESS: "Evento guardado exitosamente",
+  DELETE_SUCCESS: "Evento eliminado exitosamente",
+  UPDATE_SUCCESS: "Evento actualizado exitosamente"
+}
+
 export const strings = {
   loginErrors: {
     emailIncorrectoCode: "auth/invalid-email",

@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormItemDialog } from '../model/form.dialog.model';
+import { FormItemDialog } from '../model/form-item.model';
 
 @Component({
   selector: 'dialog-component',
@@ -23,5 +23,21 @@ export class DialogComponent {
       this.data.content.push(new FormItemDialog(this.key, this.value));
       this.key = this.value = null;
     }
+  }
+
+  //file functions
+  selectFile(event) {
+    const files = event.target.files;
+    const file = files[0];
+    if (files && file) {
+      const reader = new FileReader();
+      reader.onload = this.handleFile.bind(this);
+      reader.readAsBinaryString(file);
+    }
+  }
+
+  handleFile(event) {
+    const binaryString = event.target.result;
+    this.data.content.image = btoa(binaryString);
   }
 }

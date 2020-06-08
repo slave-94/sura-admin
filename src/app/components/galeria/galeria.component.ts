@@ -7,6 +7,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { GALERIA_MSGS } from 'src/app/shared/constants/messages.const';
 import { SNACKBAR_CONFIG } from 'src/app/shared/constants/config.consts';
 import { Observable } from 'rxjs';
+import { FormFile } from 'src/app/shared/model/form-file.model';
+import { GALERIA_FORM } from 'src/app/shared/constants/data-model.consts';
 
 @Component({
   selector: 'app-galeria',
@@ -18,9 +20,10 @@ export class GaleriaComponent implements OnInit {
   public collectionName = "galerias";
   public storageName = "galeria"
 
-  public base64;
+  //public base64;
   public images: Observable<GaleriaItem>;
   public galeriaItem = {} as GaleriaItem;
+  public formFile = {} as FormFile;
 
   constructor(
     private _adminService: AdminService,
@@ -36,9 +39,14 @@ export class GaleriaComponent implements OnInit {
     this._dialogService.buildDialog('Cargando', {}, 'loader', true);
   }
 
+  closeLoadingDialog(title, msg) {
+    this._dialogService.closeDialog();
+    this._snackBar.open(title, msg, SNACKBAR_CONFIG);
+  }
+
   getGaleria() {
     this.openLoadingDialog();
-    this._adminService.getCollection(this.collectionName).subscribe(
+    this._adminService.getItems(this.collectionName).subscribe(
       result => {
         this.images = result;
         this._dialogService.closeDialog();
@@ -46,76 +54,48 @@ export class GaleriaComponent implements OnInit {
     );
   }
 
-  selectFile(event) {
-    const files = event.target.files;
-    const file = files[0];
-    if (files && file) {
-      const reader = new FileReader();
-      reader.onload = this.handleFile.bind(this);
-      reader.readAsBinaryString(file);
-    }
-  }
-
-  handleFile(event) {
-    const binaryString = event.target.result;
-    this.base64 = btoa(binaryString);
-  }
-
-  guardarImage() {
-    this.openLoadingDialog();
-    this._adminService.uploadImage(this.storageName, this.base64).then(
-      (res) => {
-        this.galeriaItem.imagenId = res.metadata.name;
-        this.getImageUrl();
+  //this adds 'GaleriaItem' object
+  addGaleriaItem() {
+    this.formFile.formItems = GALERIA_FORM;
+    this.formFile.imageRequired = true;
+    this._dialogService.buildDialog('Cargar imagen', this.formFile, 'form-file').subscribe(
+      result => {
+        if(result) {
+          this.galeriaItem.nombre = this._adminService.convertToJSON(result.formItems).nombre;
+          this.formFile.image = result.image;
+          this.createGaleriaItem();
+        }
       }
     );
   }
 
-  getImageUrl() {
-    this._adminService.getImageUrl(this.storageName, this.galeriaItem.imagenId).then(
-      result => {
-        this.galeriaItem.imagenUrl = result;
-        this.createGaleriaItem();
-      }
-    )
-  }
-
+  //this creates 'GaleriaItem' object in collection and image in storage
   createGaleriaItem() {
-    this._adminService.createItem(this.collectionName, this.galeriaItem).then(
-      () => {
-        this._dialogService.closeDialog();
-        this._snackBar.open(GALERIA_MSGS.CREATE_SUCCESS, 'Ok', SNACKBAR_CONFIG);
-        this.getGaleria();
-      }
-    )
+    this.openLoadingDialog();
+    this._adminService.createItemWithImage(this.storageName, this.formFile.image,
+      this.collectionName, this.galeriaItem, true).then(
+        () => {
+          this.closeLoadingDialog(GALERIA_MSGS.CREATE_SUCCESS, 'Ok');
+          this.getGaleria();
+        }
+      );
   }
 
-  //eliminar imagen del storage
-  deleteImage(index) {
+  //this deletes 'GaleriaItem' object in collection and image in storage
+  deleteGaleriaItem(index) {
     const itemSelectedId = this.images[index].id;
     const itemSelectedData = this.images[index].data;
-    this._dialogService.buildDialog('¿Eliminar elemento?', 
-    `${GALERIA_MSGS.DEL_MSG_INI} ${itemSelectedData.nombre} ${GALERIA_MSGS.DEL_MSG_FIN}`, 'confirmation')
-    .subscribe(result => {
-      if(result) {
-        this.openLoadingDialog();
-        this._adminService.deleteImage(this.storageName, itemSelectedData.imagenId).then(
-          ()=> {
-            this.deleteGaleriaItem(itemSelectedId);
-          }
-        );
-      }
-    });
+    this._dialogService.buildDialog('¿Eliminar elemento?',
+      `${GALERIA_MSGS.DEL_MSG_INI} ${itemSelectedData.nombre} ${GALERIA_MSGS.DEL_MSG_FIN}`, 'confirmation')
+      .subscribe(result => {
+        if (result) {
+          this.openLoadingDialog();
+          this._adminService.deleteItemWithImage(this.storageName, itemSelectedData.imagenId, 
+            this.collectionName, itemSelectedId).then(
+            () => {
+              this.closeLoadingDialog(GALERIA_MSGS.DELETE_SUCCESS, 'Ok');
+            });
+        }
+      });
   }
-
-  //eliminar imagen de la colección
-  deleteGaleriaItem(id) {
-    this._adminService.deleteItem(this.collectionName, id).then(
-      ()=>{
-        this._dialogService.closeDialog();
-        this._snackBar.open(GALERIA_MSGS.DELETE_SUCCESS, 'Ok', SNACKBAR_CONFIG);
-      }
-    );
-  }
-
 }

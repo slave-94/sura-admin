@@ -51,6 +51,7 @@ import { SectionDirective } from './components/panel/section.directive';
 import { DialogComponent } from './shared/dialog/dialog.component';
 
 import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { ItinerariosComponent } from './components/itinerarios/itinerarios.component';
 
 
 @NgModule({
@@ -63,6 +64,7 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
     GaleriaComponent,
     SectionDirective,
     DialogComponent,
+    ItinerariosComponent,
 
   ],
   entryComponents: [

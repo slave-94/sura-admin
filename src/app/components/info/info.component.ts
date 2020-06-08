@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { AdminService } from '../../shared/services/admin.service';
 
 import { InfoItem } from 'src/app/shared/model/info-item.model';
-import { FormItemDialog } from 'src/app/shared/model/form.dialog.model';
 
 import { DIAG_MSGS } from '../../shared/constants/messages.const';
 import { DialogService } from 'src/app/shared/dialog/dialog.service';
@@ -33,7 +32,7 @@ export class InfoComponent implements OnInit {
 
   search() {
     this.openLoadingDialog();
-    this._adminService.getCollection(this.collectionName).subscribe(
+    this._adminService.getItems(this.collectionName).subscribe(
       result => {
         this.items = result;
         this.closeLoadingDialog();
@@ -53,13 +52,10 @@ export class InfoComponent implements OnInit {
   }
 
   editItem(index) {
-    const formItems = [];
     const itemSelectedId = this.items[index].id;
     const itemSelectedData = this.items[index].data;
-    const itemKeys = Object.keys(itemSelectedData);
-    for (var key of itemKeys) {
-      formItems.push(new FormItemDialog(key, itemSelectedData[key]));
-    }
+    const formItems = this._adminService.getFormItems(itemSelectedData);
+
     this._dialogService.buildDialog(itemSelectedData.nombre, formItems, 'form')
     .subscribe(result => {
       if (result) {

@@ -1,19 +1,9 @@
-<form #imgForm=ngForm>
-    <mat-form-field>
-        <mat-label>Nombre</mat-label>
-        <input matInput [(ngModel)]="galeriaItem.nombre" name="image" required />
-    </mat-form-field>
-
-    <mat-form-field class="file-galeria">
-        <ngx-mat-file-input placeholder="Subir imagen" accept="image/*" (change)="selectFile($event)">
-        </ngx-mat-file-input>
-        <mat-icon matSuffix>folder</mat-icon>
-    </mat-form-field>
-
-    <button mat-mini-fab [disabled]="!imgForm.valid || !base64" (click)="guardarImage()">
+<div class="add-item">
+    <mat-label class="label-item">Agregar imagen</mat-label>
+    <button mat-mini-fab (click)="addGaleriaItem()">
         <mat-icon>save</mat-icon>
     </button>
-</form>
+</div>
 
 <mat-grid-list cols="3">
     <mat-grid-tile *ngFor="let image of images; let i = index">
@@ -24,7 +14,10 @@
                     <img class="img" src="{{image.data.imagenUrl}}" />
                 </div>
                 <div class="footer">
-                    <button mat-mini-fab color="warn" class="btn-delete" (click)="deleteImage(i)">
+                    <!-- <button mat-mini-fab color="accent" (click)="editImage(i)">
+                        <mat-icon>visibility</mat-icon>
+                    </button> -->
+                    <button mat-mini-fab class="btn-delete" (click)="deleteGaleriaItem(i)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>

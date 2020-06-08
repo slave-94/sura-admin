@@ -1,1 +1,34 @@
-<p>eventos works!</p>
+<div *ngIf="itinerarioClosed">
+    <div class="add-item">
+        <mat-label class="label-item">Agregar evento</mat-label>
+        <button mat-mini-fab (click)="addEvento()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+    
+    <mat-grid-list cols="3">
+        <mat-grid-tile [colspan]="1" *ngFor="let evento of eventos; let i = index">
+            <mat-card class="item">
+                <mat-card-title class="title">{{evento.data.nombre}}</mat-card-title>
+                <mat-card-content>
+                    <div class="body">
+                        <img class="img" src="{{evento.data.imagenUrl}}" />
+                    </div>
+                    <div class="footer">
+                        <a class="link" routerLink="." (click)="openItinerarios()">Abrir itinerario</a>
+                        <button mat-mini-fab color="accent" (click)="editEvento(i)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-mini-fab class="btn-delete" (click)="deleteEvento(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>
+
+<div *ngIf="!itinerarioClosed">
+    <app-itinerarios (closeChild)="closeChildCall($event)"></app-itinerarios>
+</div>

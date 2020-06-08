@@ -14,8 +14,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   width: 100%;
 }
 
+.add-item {
+    .label-item {
+        color: $color-gray-dark;
+        margin-right: $gutter;
+        // font-size: $gutter * 2;
+    }
+    .btn-item {
+        width: 32px;
+        height: 32px;
+        border-radius: 100%;
+    }
+}
+
 .item {
-  width: $gutter * 22;
+  width: $gutter * 26;
   height: $gutter * 18;
   margin-bottom: $gutter * 2;
   .title {
@@ -34,9 +47,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
   .footer {
       text-align: right;
+      .link {
+        text-decoration: none;
+        font-weight: bold;
+        color: $color-green-light;
+        margin-right: $gutter * 2;
+      }
       .btn-delete {
           margin-left: $gutter;
           background-color: $color-pink-dark;
+          color: $color-gray-light;
       }
   }
 }

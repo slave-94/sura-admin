@@ -34,13 +34,41 @@
     <mat-dialog-content>
         <form>
             <mat-form-field class="input" *ngFor="let item of data.content; let i = index">
-                <mat-label>{{item.key}}</mat-label>
-                <input matInput [(ngModel)]="item.value" [ngModelOptions]="{standalone: true}" />
+                <mat-label>{{item.title?item.title:item.key}}</mat-label>
+                <input [type]="item.type" matInput [(ngModel)]="item.value" [ngModelOptions]="{standalone: true}"
+                    [required]=item.required />
             </mat-form-field>
         </form>
     </mat-dialog-content>
     <div class="footer">
         <button mat-raised-button class="btn" color="accent" [mat-dialog-close]="data.content">
+            Actualizar
+        </button>
+        <button mat-raised-button class="btn" color="warn" mat-dialog-close>
+            Cancelar
+        </button>
+    </div>
+</div>
+
+<div *ngIf="data.type==='form-file'">
+    <h2 mat-dialog-title>{{data.title}}</h2>
+    <mat-dialog-content>
+        <form #formFile=ngForm>
+            <mat-form-field class="input" *ngFor="let item of data.content.formItems; let i = index">
+                <mat-label>{{item.title?item.title:item.key}}</mat-label>
+                <input [type]="item.type" matInput [(ngModel)]="item.value" [ngModelOptions]="{standalone: true}"
+                    [required]=item.required />
+            </mat-form-field>
+            <mat-form-field class="file-galeria">
+                <ngx-mat-file-input placeholder="Subir imagen" accept="image/*" (change)="selectFile($event)">
+                </ngx-mat-file-input>
+                <mat-icon matSuffix>folder</mat-icon>
+            </mat-form-field>
+        </form>
+    </mat-dialog-content>
+    <div class="footer">
+        <button mat-raised-button class="btn" color="accent" [mat-dialog-close]="data.content"
+            [disabled]="!formFile.valid || (!data.content.image && data.content.imageRequired)">
             Actualizar
         </button>
         <button mat-raised-button class="btn" color="warn" mat-dialog-close>
