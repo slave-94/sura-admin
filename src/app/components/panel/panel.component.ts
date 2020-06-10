@@ -1,11 +1,10 @@
-import { Component, OnInit, NgZone, ViewContainerRef, ComponentFactoryResolver, OnDestroy, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, NgZone, ComponentFactoryResolver, OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { LoginService } from '../login/login.service';
 
 import { SectionDirective } from './section.directive';
 import { SectionItem } from './section.item';
-import { SectionComponent } from './section.component';
 import { SectionService } from './section.service';
 
 @Component({
@@ -17,7 +16,6 @@ export class PanelComponent implements OnInit, OnDestroy {
   @ViewChild(SectionDirective, {static:true}) sectionHost: SectionDirective;
 
   sections: SectionItem[];
-  section: string;
 
   constructor(
     private _ngZone: NgZone,
@@ -28,13 +26,13 @@ export class PanelComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.section = 'info';
     this.loadSections();
   }
   
   loadSections() {
     this.sections = this._sectionService.getComponents();    
-    this.loadComponent(this.sections[0]);  
+    //this.loadComponent(this.sections[0]);  
+    this.loadComponent(this.sections[1]);  
   }
 
   setInfoComponent() {
@@ -55,13 +53,11 @@ export class PanelComponent implements OnInit, OnDestroy {
     const viewContainerRef = this.sectionHost.viewContainerRef;
     viewContainerRef.clear();
     viewContainerRef.createComponent(componentFactory);
-    //const componentRef = viewContainerRef.createComponent(componentFactory);
-    //(<SectionComponent>componentRef.instance).data = sectionItem.data();
   }
 
   logout() {
     this._loginService.logout().then(
-      result => {
+      () => {
         this._ngZone.run(() => this._router.navigate(['']));
         localStorage.clear();
       }

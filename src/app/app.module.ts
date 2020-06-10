@@ -40,7 +40,8 @@ const config = {
 
 import { LoginService } from './components/login/login.service';
 import { SectionService } from './components/panel/section.service';
-import { InfoService } from './components/info/info.service';
+import { AdminService } from './shared/services/admin.service';
+import { DialogService } from './shared/dialog/dialog.service';
 
 import { InfoComponent } from './components/info/info.component';
 import { EventosComponent } from './components/eventos/eventos.component';
@@ -48,6 +49,10 @@ import { GaleriaComponent } from './components/galeria/galeria.component';
 import { SectionDirective } from './components/panel/section.directive';
 
 import { DialogComponent } from './shared/dialog/dialog.component';
+
+import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { ItinerariosComponent } from './components/itinerarios/itinerarios.component';
+
 
 @NgModule({
   declarations: [
@@ -58,7 +63,9 @@ import { DialogComponent } from './shared/dialog/dialog.component';
     EventosComponent,
     GaleriaComponent,
     SectionDirective,
-    DialogComponent
+    DialogComponent,
+    ItinerariosComponent,
+
   ],
   entryComponents: [
     LoginComponent,
@@ -87,8 +94,9 @@ import { DialogComponent } from './shared/dialog/dialog.component';
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     AngularFireStorageModule,
+    MaterialFileInputModule
   ],
-  providers: [LoginService, SectionService, InfoService],
+  providers: [LoginService, SectionService, AdminService, DialogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

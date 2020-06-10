@@ -1,23 +1,43 @@
-import { Component, Inject} from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormItemDialog } from '../model/form.dialog.model';
+import { FormItemDialog } from '../model/form-item.model';
 
 @Component({
-    selector: 'dialog-component',
-    templateUrl: './dialog.component.html',
-    styleUrls: ['./dialog.component.scss']
-  })
-  export class DialogComponent {
-    public key;
-    public value;
+  selector: 'dialog-component',
+  templateUrl: './dialog.component.html',
+  styleUrls: ['./dialog.component.scss']
+})
+export class DialogComponent {
+  //form properties
+  public key;
+  public value;
 
-    constructor(
-      public dialogRef: MatDialogRef<DialogComponent>,
-      @Inject(MAT_DIALOG_DATA) public data:any){}
+  constructor(
+    public dialogRef: MatDialogRef<DialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-      addItem() {
-        if(this.data.content && this.key && this.value) {
-          this.data.content.push(new FormItemDialog(this.key, this.value));
-        }
-      }
+
+  //form functions
+  addItem() {
+    if (this.data.content && this.key && this.value) {
+      this.data.content.push(new FormItemDialog(this.key, this.value));
+      this.key = this.value = null;
+    }
   }
+
+  //file functions
+  selectFile(event) {
+    const files = event.target.files;
+    const file = files[0];
+    if (files && file) {
+      const reader = new FileReader();
+      reader.onload = this.handleFile.bind(this);
+      reader.readAsBinaryString(file);
+    }
+  }
+
+  handleFile(event) {
+    const binaryString = event.target.result;
+    this.data.content.image = btoa(binaryString);
+  }
+}
