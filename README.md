@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # SuraAdmin
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.6.
@@ -29,4 +28,3 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 =======
 # sura-admin
 Desktop version of admin module
->>>>>>> f0015a617909f100fc89fd82887f09c232dffc6e
