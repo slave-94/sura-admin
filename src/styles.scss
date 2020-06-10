@@ -59,10 +59,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
         color: $color-green-light;
         margin-right: $gutter * 2;
       }
+      .btn-edit {
+        margin-left: $gutter;
+        background-color: $color-blue;
+        color: $color-gray-light;
+      }
       .btn-delete {
-          margin-left: $gutter;
-          background-color: $color-pink-dark;
-          color: $color-gray-light;
+        background-color: $color-pink-dark;
+        margin-left: $gutter;
+        color: $color-gray-light;
       }
   }
 }

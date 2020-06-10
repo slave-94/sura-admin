@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormItemDialog } from '../model/form-item.model';
+import { FormItem } from './form-item.model';
 
 @Component({
   selector: 'dialog-component',
@@ -9,18 +9,17 @@ import { FormItemDialog } from '../model/form-item.model';
 })
 export class DialogComponent {
   //form properties
-  public key;
-  public value;
+  public key: string;
+  public value: string;
 
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-
   //form functions
   addItem() {
     if (this.data.content && this.key && this.value) {
-      this.data.content.push(new FormItemDialog(this.key, this.value));
+      this.data.content.formItems.push(new FormItem(this.key, this.value));
       this.key = this.value = null;
     }
   }

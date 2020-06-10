@@ -3,15 +3,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AdminService } from 'src/app/shared/services/admin.service';
-import { IEvento } from 'src/app/shared/model/evento.model';
+import { IEvento } from 'src/app/shared/model/evento-item.model';
 import { DialogService } from 'src/app/shared/dialog/dialog.service';
 
-import { FormFile } from 'src/app/shared/model/form-file.model';
+import { IFormContent } from 'src/app/shared/dialog/form-content.model';
 
 import { ITINERARIOS_MSGS } from 'src/app/shared/constants/messages.const';
 import { SNACKBAR_CONFIG } from 'src/app/shared/constants/config.consts';
 import { ITINERARIO_FORM } from 'src/app/shared/constants/data-model.consts';
-import { IItinerario } from 'src/app/shared/model/itinerario.model';
+import { IItinerario } from 'src/app/shared/model/itinerario-item.model';
 
 @Component({
   selector: 'app-itinerarios',
@@ -26,7 +26,6 @@ export class ItinerariosComponent implements OnInit {
 
   public itinerarios: Array<any>;
   public itinerario = {} as IItinerario;
-  public formFile = {} as FormFile;
 
   constructor(
     private _adminService: AdminService,
@@ -39,7 +38,7 @@ export class ItinerariosComponent implements OnInit {
   }
 
   openLoadingDialog(msg) {
-    this._dialogService.buildDialog(msg, {}, 'loader', true);
+    this._dialogService.buildLoaderDialog(msg, true);
   }
 
   closeLoadingDialog(title, msg) {
@@ -63,16 +62,13 @@ export class ItinerariosComponent implements OnInit {
   }
 
   addItinerario() {
-    this.formFile.formItems = ITINERARIO_FORM;
-    this.formFile.itemHasModel = true;
-    this._dialogService.buildDialog('Nuevo itinerario', this.formFile, 'form')
+    const formContent = { formItems: ITINERARIO_FORM } as IFormContent;
+    this._dialogService.buildFormDialog('Nuevo itinerario', formContent)
       .subscribe(result => {
         if (result) {
           this.itinerario = this._adminService.convertToJSON(result.formItems);
-          this.formFile.image = result.image;
           this.createItinerario();
         } else {
-          this.formFile = {} as FormFile;
           this._adminService.clearForm(ITINERARIO_FORM);
         }
       });
@@ -90,15 +86,14 @@ export class ItinerariosComponent implements OnInit {
 
   editItinerario(index) {
     this.itinerario = this.itinerarios[index];
-    this.formFile.formItems = this._adminService.fillForm(this.itinerario, ITINERARIO_FORM);
-    this.formFile.itemHasModel = true;
-    this._dialogService.buildDialog('Editar evento', this.formFile, 'form')
+    const formItems = this._adminService.fillForm(this.itinerario, ITINERARIO_FORM);
+    const formContent = { formItems: formItems };
+    this._dialogService.buildFormDialog('Editar evento', formContent)
       .subscribe(result => {
         if (result) {
           this.itinerario = <IItinerario>this._adminService.addFormDataToItem(this.itinerario, result.formItems);
           this.updateItinerario(this.itinerario.id);
         } else {
-          this.formFile = {} as FormFile;
           this._adminService.clearForm(ITINERARIO_FORM);
         }
       });
@@ -115,8 +110,8 @@ export class ItinerariosComponent implements OnInit {
 
   deleteItinerario(index) {
     this.itinerario = this.itinerarios[index];
-    this._dialogService.buildDialog('¿Eliminar elemento?',
-      `${ITINERARIOS_MSGS.DEL_MSG_INI} ${this.itinerario.nombre} ${ITINERARIOS_MSGS.DEL_MSG_FIN}`, 'confirmation')
+    this._dialogService.buildConfirmationDialog('¿Eliminar elemento?',
+      `${ITINERARIOS_MSGS.DEL_MSG_INI} ${this.itinerario.nombre} ${ITINERARIOS_MSGS.DEL_MSG_FIN}`)
       .subscribe(result => {
         if (result) {
           this.openLoadingDialog('Eliminando evento');
@@ -132,5 +127,4 @@ export class ItinerariosComponent implements OnInit {
   close() {
     this.closeChild.emit(true);
   }
-
 }

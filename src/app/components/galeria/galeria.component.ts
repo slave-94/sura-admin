@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from 'src/app/shared/services/admin.service';
 import { DialogService } from 'src/app/shared/dialog/dialog.service';
-import { GaleriaItem } from 'src/app/shared/model/galeria-item.model';
+import { IGaleriaItem } from 'src/app/shared/model/galeria-item.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { GALERIA_MSGS } from 'src/app/shared/constants/messages.const';
 import { SNACKBAR_CONFIG } from 'src/app/shared/constants/config.consts';
 import { Observable } from 'rxjs';
-import { FormFile } from 'src/app/shared/model/form-file.model';
+import { IFormContent } from 'src/app/shared/dialog/form-content.model';
 import { GALERIA_FORM } from 'src/app/shared/constants/data-model.consts';
 
 @Component({
@@ -20,10 +20,8 @@ export class GaleriaComponent implements OnInit {
   public collectionName = "galerias";
   public storageName = "galeria"
 
-  //public base64;
-  public images: Observable<GaleriaItem>;
-  public galeriaItem = {} as GaleriaItem;
-  public formFile = {} as FormFile;
+  public images: Observable<IGaleriaItem>;
+  public galeriaItem = {} as IGaleriaItem;
 
   constructor(
     private _adminService: AdminService,
@@ -35,8 +33,8 @@ export class GaleriaComponent implements OnInit {
     this.getGaleria();
   }
 
-  openLoadingDialog() {
-    this._dialogService.buildDialog('Cargando', {}, 'loader', true);
+  openLoadingDialog(msg) {
+    this._dialogService.buildLoaderDialog(msg, true);
   }
 
   closeLoadingDialog(title, msg) {
@@ -45,7 +43,7 @@ export class GaleriaComponent implements OnInit {
   }
 
   getGaleria() {
-    this.openLoadingDialog();
+    this.openLoadingDialog('Cargando');
     this._adminService.getItems(this.collectionName).subscribe(
       result => {
         this.images = result;
@@ -56,23 +54,21 @@ export class GaleriaComponent implements OnInit {
 
   //this adds 'GaleriaItem' object
   addGaleriaItem() {
-    this.formFile.formItems = GALERIA_FORM;
-    this.formFile.imageRequired = true;
-    this._dialogService.buildDialog('Cargar imagen', this.formFile, 'form-file').subscribe(
+    const formContent = { formItems: GALERIA_FORM, imageFieldAvailable: true } as IFormContent
+    this._dialogService.buildFormDialog('Cargar imagen', formContent).subscribe(
       result => {
-        if(result) {
+        if (result) {
           this.galeriaItem.nombre = this._adminService.convertToJSON(result.formItems).nombre;
-          this.formFile.image = result.image;
-          this.createGaleriaItem();
+          this.createGaleriaItem(result.image);
         }
       }
     );
   }
 
   //this creates 'GaleriaItem' object in collection and image in storage
-  createGaleriaItem() {
-    this.openLoadingDialog();
-    this._adminService.createItemWithImage(this.storageName, this.formFile.image,
+  createGaleriaItem(image) {
+    this.openLoadingDialog('Creando imagen');
+    this._adminService.createItemWithImage(this.storageName, image,
       this.collectionName, this.galeriaItem, true).then(
         () => {
           this.closeLoadingDialog(GALERIA_MSGS.CREATE_SUCCESS, 'Ok');
@@ -85,16 +81,16 @@ export class GaleriaComponent implements OnInit {
   deleteGaleriaItem(index) {
     const itemSelectedId = this.images[index].id;
     const itemSelectedData = this.images[index].data;
-    this._dialogService.buildDialog('¿Eliminar elemento?',
-      `${GALERIA_MSGS.DEL_MSG_INI} ${itemSelectedData.nombre} ${GALERIA_MSGS.DEL_MSG_FIN}`, 'confirmation')
+    this._dialogService.buildConfirmationDialog('¿Eliminar elemento?',
+      `${GALERIA_MSGS.DEL_MSG_INI} ${itemSelectedData.nombre} ${GALERIA_MSGS.DEL_MSG_FIN}`)
       .subscribe(result => {
         if (result) {
-          this.openLoadingDialog();
-          this._adminService.deleteItemWithImage(this.storageName, itemSelectedData.imagenId, 
+          this.openLoadingDialog('Eliminando imagen');
+          this._adminService.deleteItemWithImage(this.storageName, itemSelectedData.imagenId,
             this.collectionName, itemSelectedId).then(
-            () => {
-              this.closeLoadingDialog(GALERIA_MSGS.DELETE_SUCCESS, 'Ok');
-            });
+              () => {
+                this.closeLoadingDialog(GALERIA_MSGS.DELETE_SUCCESS, 'Ok');
+              });
         }
       });
   }

@@ -18,7 +18,7 @@
 
 <div *ngIf="data.type==='form'">
     <h2 mat-dialog-title>{{data.title}}</h2>
-    <div class="header" *ngIf="!data.content.itemHasModel">
+    <div class="header" *ngIf="data.content.dynamic">
         <mat-form-field class="input-key-value">
             <mat-label>Key</mat-label>
             <input matInput [(ngModel)]="key" name="key" />
@@ -38,28 +38,7 @@
                 <input [type]="item.type" matInput [(ngModel)]="item.value" name="formItem{{i}}"
                     [required]="item.required" />
             </mat-form-field>
-        </form>
-    </mat-dialog-content>
-    <div class="footer">
-        <button mat-raised-button class="btn" color="accent" [mat-dialog-close]="data.content" [disabled]="!formFields.valid">
-            Actualizar
-        </button>
-        <button mat-raised-button class="btn" color="warn" mat-dialog-close>
-            Cancelar
-        </button>
-    </div>
-</div>
-
-<div *ngIf="data.type==='form-file'">
-    <h2 mat-dialog-title>{{data.title}}</h2>
-    <mat-dialog-content>
-        <form #formFile=ngForm>
-            <mat-form-field class="input" *ngFor="let item of data.content.formItems; let i = index">
-                <mat-label>{{item.title?item.title:item.key}}</mat-label>
-                <input [type]="item.type" matInput [(ngModel)]="item.value" [ngModelOptions]="{standalone: true}"
-                    [required]="item.required" />
-            </mat-form-field>
-            <mat-form-field class="file-galeria">
+            <mat-form-field class="file-galeria" *ngIf="data.content.imageFieldAvailable">
                 <ngx-mat-file-input placeholder="Subir imagen" accept="image/*" (change)="selectFile($event)">
                 </ngx-mat-file-input>
                 <mat-icon matSuffix>folder</mat-icon>
@@ -67,8 +46,9 @@
         </form>
     </mat-dialog-content>
     <div class="footer">
-        <button mat-raised-button class="btn" color="accent" [mat-dialog-close]="data.content"
-            [disabled]="!formFile.valid || (!data.content.image && data.content.imageRequired)">
+        <button mat-raised-button class="btn" color="accent" [mat-dialog-close]="data.content" 
+        [disabled]="!formFields.valid || data.content.formItems.length===0 ||
+        (!data.content.image && (data.content.imageFieldAvailable && !data.content.imageFieldOptional))">
             Actualizar
         </button>
         <button mat-raised-button class="btn" color="warn" mat-dialog-close>

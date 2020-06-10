@@ -1,6 +1,6 @@
-import { FormItemDialog } from '../model/form-item.model';
+import { FormItem } from '../dialog/form-item.model';
 
-export const EVENTO_FORM: FormItemDialog[] = [
+export const EVENTO_FORM: FormItem[] = [
     {
         key: 'nombre',
         value: '',
@@ -38,7 +38,7 @@ export const EVENTO_FORM: FormItemDialog[] = [
     }
 ]
 
-export const ITINERARIO_FORM: FormItemDialog[] = [
+export const ITINERARIO_FORM: FormItem[] = [
     {
         key: 'nombre',
         value: '',
@@ -97,7 +97,7 @@ export const ITINERARIO_FORM: FormItemDialog[] = [
     }
 ]
 
-export const GALERIA_FORM: FormItemDialog[] = [
+export const GALERIA_FORM: FormItem[] = [
     {
         key: 'nombre',
         value: '',

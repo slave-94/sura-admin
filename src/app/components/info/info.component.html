@@ -26,12 +26,12 @@
                     <img class="img" src="{{item.data.imagen?item.data.imagen:item.data.foto}}" />
                 </div>
                 <div class="footer">
-                    <button mat-mini-fab color="accent" (click)="editItem(i)">
+                    <button mat-mini-fab color="primary" (click)="linkImage(i)">
+                        <mat-icon>attach_file</mat-icon>
+                    </button>
+                    <button mat-mini-fab color="accent" class="btn-edit" (click)="editItem(i)">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <!-- <button mat-mini-fab color="primary">
-                        <mat-icon>edit</mat-icon>
-                    </button> -->
                     <button mat-mini-fab color="warn" class="btn-delete" (click)="deleteItem(i)">
                         <mat-icon>delete</mat-icon>
                     </button>

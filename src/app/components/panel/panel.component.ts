@@ -31,8 +31,7 @@ export class PanelComponent implements OnInit, OnDestroy {
   
   loadSections() {
     this.sections = this._sectionService.getComponents();    
-    //this.loadComponent(this.sections[0]);  
-    this.loadComponent(this.sections[1]);  
+    this.loadComponent(this.sections[0]);  
   }
 
   setInfoComponent() {
