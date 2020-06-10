@@ -40,9 +40,9 @@ export class AdminService {
     fillForm(obj, form): FormItemDialog[] {
         const formItems = this.getFormItems(obj);
         form.forEach((item) => {
-            const value = formItems.filter(i => i.key === item.key)[0].value;
-            if (value) {
-                item.value = value;
+            const formItem = formItems.filter(i => i.key === item.key)[0];
+            if (formItem) {
+                item.value = formItem.value;
             }
         });
         return form;
@@ -92,6 +92,24 @@ export class AdminService {
         return this._database.collection(collection).doc(id).delete();
     }
 
+    //RELATIONSHIPS
+
+    //get items with relationship
+    getItemsWithRelationship(collection, field, id): Promise<any> {
+        return this._database.collection(collection).ref.where(field, "==", id).get();
+    }
+
+    //delete items with relationship
+    deleteItemsWithRelationship(collectionA, collectionB, field, id): Promise<any> {
+        return this._database.collection(collectionA).ref.where(field, "==", id).get().then(
+            result => {
+                result.forEach(doc => {
+                    this.deleteItem(collectionB, doc.id);
+                });
+            }
+        );
+    }
+
     //CRUD imagen
 
     getImageUrl(storage, id): Promise<any> {
@@ -112,21 +130,21 @@ export class AdminService {
 
     //this saves object in collection and image file in storage then this saves image url from storage
     //to object and finally it creates object in collection
-    createItemWithImage(storageName, file, collectionName, data, needsIdField?: boolean): Promise<any> {
+    createItemWithImage(storageName, file, collection, data, needsIdField?: boolean): Promise<any> {
         return this.uploadImage(storageName, file).then(
             result => {
                 data.imagenId = result.metadata.name;
                 return this.getImageUrl(storageName, data.imagenId).then(
                     result => {
                         data.imagenUrl = result;
-                        return this.createItem(collectionName, data, needsIdField);
+                        return this.createItem(collection, data, needsIdField);
                     });
             });
     }
 
     //this deletes old image file from storage and it saves new image file in storage then
     //this saves image url from storage to object and finally it updates object in collection
-    updateItemWithImage(storageName, imageId, file, collectionName, itemId, data): Promise<any> {
+    updateItemWithImage(storageName, imageId, file, collection, itemId, data): Promise<any> {
         return this.deleteImage(storageName, imageId).then(
             () => {
                 return this.uploadImage(storageName, file).then(
@@ -135,17 +153,17 @@ export class AdminService {
                         return this.getImageUrl(storageName, data.imagenId).then(
                             result => {
                                 data.imagenUrl = result;
-                                return this.updateItem(collectionName, itemId, data);
+                                return this.updateItem(collection, itemId, data);
                             });
                     });
             });
     }
 
     //this deletes image file from storage and it deletes object in collection
-    deleteItemWithImage(storageName, imageId, collectionName, itemId): Promise<any> {
+    deleteItemWithImage(storageName, imageId, collection, itemId): Promise<any> {
         return this.deleteImage(storageName, imageId).then(
             () => {
-                return this.deleteItem(collectionName, itemId);
+                return this.deleteItem(collection, itemId);
             });
     }
 }

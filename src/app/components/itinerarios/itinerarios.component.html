@@ -1,6 +1,39 @@
 <div class="header">
-    <mat-label class="msg-left">itinerarios works!</mat-label>
     <button class="back-button" mat-mini-fab (click)="close()">
         <mat-icon>backspace</mat-icon>
     </button>
 </div>
+
+<div class="add-item">
+    <mat-label class="label-item">Agregar itinerario</mat-label>
+    <button mat-mini-fab (click)="addItinerario()">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>
+
+<mat-label class="msg-left">{{evento.descripcion}}</mat-label>
+
+<mat-grid-list cols="3">
+    <mat-grid-tile [colspan]="1" *ngFor="let itinerario of itinerarios; let i = index">
+        <mat-card class="item">
+            <mat-card-title class="title">{{itinerario.nombre}}</mat-card-title>
+            <mat-card-content>
+                <div class="body">
+                    <div class="text">
+                        <mat-label>{{itinerario.lugar}}</mat-label>
+                        <br/>
+                        <mat-label>{{itinerario.horaInicio}} - {{itinerario.horaFin}}</mat-label>
+                    </div>
+                </div>
+                <div class="footer">
+                    <button mat-mini-fab color="accent" (click)="editItinerario(i)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-mini-fab class="btn-delete" (click)="deleteItinerario(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>

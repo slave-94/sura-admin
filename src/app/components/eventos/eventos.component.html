@@ -15,7 +15,7 @@
                         <img class="img" src="{{evento.data.imagenUrl}}" />
                     </div>
                     <div class="footer">
-                        <a class="link" routerLink="." (click)="openItinerarios()">Abrir itinerario</a>
+                        <a class="link" routerLink="." (click)="openItinerarios(i)">Abrir itinerario</a>
                         <button mat-mini-fab color="accent" (click)="editEvento(i)">
                             <mat-icon>edit</mat-icon>
                         </button>
@@ -30,5 +30,5 @@
 </div>
 
 <div *ngIf="!itinerarioClosed">
-    <app-itinerarios (closeChild)="closeChildCall($event)"></app-itinerarios>
+    <app-itinerarios [evento]="evento" (closeChild)="closeChildCall($event)"></app-itinerarios>
 </div>

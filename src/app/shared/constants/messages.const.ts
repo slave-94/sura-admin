@@ -24,6 +24,15 @@ export const EVENTOS_MSGS = {
   UPDATE_SUCCESS: "Evento actualizado exitosamente"
 }
 
+export const ITINERARIOS_MSGS = {
+  DEL_MSG_INI: "El itinearario",
+  DEL_MSG_FIN: "será eliminado",
+  CREATE_SUCCESS: "Itinerario guardado exitosamente",
+  DELETE_SUCCESS: "Itinerario eliminado exitosamente",
+  UPDATE_SUCCESS: "Itinerario actualizado exitosamente"
+}
+
+
 export const strings = {
   loginErrors: {
     emailIncorrectoCode: "auth/invalid-email",

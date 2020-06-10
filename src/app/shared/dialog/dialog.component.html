@@ -18,7 +18,7 @@
 
 <div *ngIf="data.type==='form'">
     <h2 mat-dialog-title>{{data.title}}</h2>
-    <div class="header">
+    <div class="header" *ngIf="!data.content.itemHasModel">
         <mat-form-field class="input-key-value">
             <mat-label>Key</mat-label>
             <input matInput [(ngModel)]="key" name="key" />
@@ -32,16 +32,16 @@
         </button>
     </div>
     <mat-dialog-content>
-        <form>
-            <mat-form-field class="input" *ngFor="let item of data.content; let i = index">
+        <form #formFields=ngForm>
+            <mat-form-field class="input" *ngFor="let item of data.content.formItems; let i = index">
                 <mat-label>{{item.title?item.title:item.key}}</mat-label>
-                <input [type]="item.type" matInput [(ngModel)]="item.value" [ngModelOptions]="{standalone: true}"
-                    [required]=item.required />
+                <input [type]="item.type" matInput [(ngModel)]="item.value" name="formItem{{i}}"
+                    [required]="item.required" />
             </mat-form-field>
         </form>
     </mat-dialog-content>
     <div class="footer">
-        <button mat-raised-button class="btn" color="accent" [mat-dialog-close]="data.content">
+        <button mat-raised-button class="btn" color="accent" [mat-dialog-close]="data.content" [disabled]="!formFields.valid">
             Actualizar
         </button>
         <button mat-raised-button class="btn" color="warn" mat-dialog-close>
@@ -57,7 +57,7 @@
             <mat-form-field class="input" *ngFor="let item of data.content.formItems; let i = index">
                 <mat-label>{{item.title?item.title:item.key}}</mat-label>
                 <input [type]="item.type" matInput [(ngModel)]="item.value" [ngModelOptions]="{standalone: true}"
-                    [required]=item.required />
+                    [required]="item.required" />
             </mat-form-field>
             <mat-form-field class="file-galeria">
                 <ngx-mat-file-input placeholder="Subir imagen" accept="image/*" (change)="selectFile($event)">

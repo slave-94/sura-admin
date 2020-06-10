@@ -28,7 +28,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .item {
-  width: $gutter * 26;
+  width: $gutter * 28;
   height: $gutter * 18;
   margin-bottom: $gutter * 2;
   .title {
@@ -39,6 +39,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   .body {
       margin: auto;
       text-align: center;
+      .text {
+        margin-top: $gutter * 2;
+        text-align: left;
+        width: $gutter * 20;
+        height: $gutter * 8;
+      }
       .img {
           width: $gutter * 8;
           height: $gutter * 8;

@@ -38,6 +38,65 @@ export const EVENTO_FORM: FormItemDialog[] = [
     }
 ]
 
+export const ITINERARIO_FORM: FormItemDialog[] = [
+    {
+        key: 'nombre',
+        value: '',
+        title: 'Nombre',
+        type: 'text',
+        required: true
+    },
+    {
+        key: 'descripcion',
+        value: '',
+        title: 'Descripción',
+        type: 'text',
+        required: true
+    },
+    {
+        key: 'ponente',
+        value: '',
+        title: 'Ponente',
+        type: 'text',
+        required: false
+    },
+    {
+        key: 'lugar',
+        value: '',
+        title: 'Lugar',
+        type: 'text',
+        required: true
+    },
+    {
+        key: 'tipo',
+        value: '',
+        title: 'Tipo',
+        type: 'text',
+        required: true
+    },
+    {
+        key: 'fecha',
+        value: '',
+        title: 'Fecha',
+        type: 'date',
+        required: true
+    },
+    {
+        key: 'horaInicio',
+        value: '',
+        title: 'Hora de inicio',
+        type: 'time',
+        required: true
+    },
+    {
+        key: 'horaFin',
+        value: '',
+        title: 'Hora de cierre',
+        type: 'time',
+        required: true
+    }
+]
+
 export const GALERIA_FORM: FormItemDialog[] = [
     {
         key: 'nombre',

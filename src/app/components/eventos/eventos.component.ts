@@ -42,7 +42,8 @@ export class EventosComponent implements OnInit {
     this.itinerarioClosed = $event;
   }
 
-  openItinerarios() {
+  openItinerarios(index) {
+    this.evento = this.eventos[index].data;
     this.itinerarioClosed = false;
   }
 
@@ -120,19 +121,21 @@ export class EventosComponent implements OnInit {
   }
 
   updateEventoWithoutImage(id) {
+    this.openLoadingDialog('Actualizando evento');
     this._adminService.updateItem(this.collectionName, id, this.evento).then(
       () => {
         this.closeLoadingDialog(EVENTOS_MSGS.UPDATE_SUCCESS, 'Ok');
+        this.getEventos();
       });
   }
 
   updateEventoWithImage(id) {
     this.openLoadingDialog('Actualizando evento');
-    console.log('evento->', this.evento)
     this._adminService.updateItemWithImage(this.storageName, this.evento.imagenId, this.formFile.image,
       this.collectionName, id, this.evento).then(
         () => {
           this.closeLoadingDialog(EVENTOS_MSGS.UPDATE_SUCCESS, 'Ok');
+          this.getEventos();
         });
   }
 

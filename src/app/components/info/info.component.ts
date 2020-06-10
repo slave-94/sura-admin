@@ -8,6 +8,7 @@ import { InfoItem } from 'src/app/shared/model/info-item.model';
 
 import { DIAG_MSGS } from '../../shared/constants/messages.const';
 import { DialogService } from 'src/app/shared/dialog/dialog.service';
+import { FormFile } from 'src/app/shared/model/form-file.model';
 
 @Component({
   selector: 'app-info',
@@ -19,6 +20,8 @@ export class InfoComponent implements OnInit {
   public collectionName = '';
   public loading = true;
   public hasItems = false;
+
+  public formFile = {} as FormFile;
 
   public items: Observable<InfoItem[]>;
 
@@ -54,12 +57,11 @@ export class InfoComponent implements OnInit {
   editItem(index) {
     const itemSelectedId = this.items[index].id;
     const itemSelectedData = this.items[index].data;
-    const formItems = this._adminService.getFormItems(itemSelectedData);
-
-    this._dialogService.buildDialog(itemSelectedData.nombre, formItems, 'form')
+    this.formFile.formItems = this._adminService.getFormItems(itemSelectedData);
+    this._dialogService.buildDialog(itemSelectedData.nombre, this.formFile, 'form')
     .subscribe(result => {
       if (result) {
-        this.updateItem(itemSelectedId, result);
+        this.updateItem(itemSelectedId, result.formItems);
       }
     });
   }
@@ -70,7 +72,7 @@ export class InfoComponent implements OnInit {
     .subscribe(result => {
       if (result) {
         this.openLoadingDialog();
-        const dataConverted = this._adminService.convertToJSON(result);
+        const dataConverted = this._adminService.convertToJSON(result.formItems);
         this._adminService.createItem(this.collectionName, dataConverted).then(
           () => {
             this.closeLoadingDialog();
