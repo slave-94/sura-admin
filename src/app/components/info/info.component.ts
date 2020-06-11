@@ -40,7 +40,6 @@ export class InfoComponent implements OnInit {
         if (result.length > 0) {
           this.hasItems = true;
         }
-        console.log(result)
       }
     );
   }
@@ -136,7 +135,6 @@ export class InfoComponent implements OnInit {
           const dataConverted = this._adminService.convertToJSON(result.formItems);
           const imgKey = this._adminService.generateFormItem(dataConverted.keyName, result.image);
           const data = this._adminService.addFormDataToItem(itemSelectedData, imgKey);
-          console.log('data->', data)
           this._adminService.uploadImage(dataConverted.directory, data.imagen, data.nombre).then(
             result => {
               data.imagenId = result.metadata.name;

@@ -12,7 +12,7 @@ export const EVENTO_FORM: FormItem[] = [
         key: 'descripcion',
         value: '',
         title: 'Descripción',
-        type: 'text',
+        type: 'text-area',
         required: true
     },
     {
@@ -50,7 +50,7 @@ export const ITINERARIO_FORM: FormItem[] = [
         key: 'descripcion',
         value: '',
         title: 'Descripción',
-        type: 'text',
+        type: 'text-area',
         required: true
     },
     {

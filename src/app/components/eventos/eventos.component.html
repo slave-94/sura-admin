@@ -1,7 +1,7 @@
 <div *ngIf="itinerarioClosed">
-    <div class="add-item">
-        <mat-label class="label-item">Agregar evento</mat-label>
-        <button mat-mini-fab (click)="addEvento()">
+    <div class="btn-header">
+        <mat-label class="item-bh">Agregar evento</mat-label>
+        <button mat-mini-fab class="icon-bh" (click)="addEvento()">
             <mat-icon>add</mat-icon>
         </button>
     </div>
@@ -16,7 +16,7 @@
                     </div>
                     <div class="footer">
                         <a class="link" routerLink="." (click)="openItinerarios(i)">Abrir itinerario</a>
-                        <button mat-mini-fab color="accent" (click)="editEvento(i)">
+                        <button mat-mini-fab class="btn-edit" (click)="editEvento(i)">
                             <mat-icon>edit</mat-icon>
                         </button>
                         <button mat-mini-fab class="btn-delete" (click)="deleteEvento(i)">
