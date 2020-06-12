@@ -2,7 +2,7 @@
 
 .container {
   position: absolute;
-  top: 60px;
+  top: $gutter * 8;
   bottom: 0px;
   left: 0;
   right: 0;
@@ -36,17 +36,29 @@
     max-width: $gutter * 50;
 }
 
-.side-options {
-    margin-top: $gutter * 2;
-    text-align: center;
-}
 
-.btn-opc {
-    margin-bottom: $gutter;
-    width: 80%;
+.side-options {
+  // margin-top: $gutter * 2;
+  text-align: center;
+  .btn-opc {
+    // margin-bottom: $gutter;
+    border-radius: 0;
+    width: 100%;
+    height: $gutter * 6;
+    border-bottom: 1px solid $color-gray-dark;
     background: $color-gray-light;
     color: $color-gray-dark;
+  }
+  .btn-opc-active {
+    // margin-bottom: $gutter;
+    border-radius: 0;
+    width: 100%;
+    height: $gutter * 6;
+    background: $color-gray-dark;
+    color: $color-gray-light;
+  }
 }
+
 
 .btn-exit {
   position: fixed;

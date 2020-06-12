@@ -3,12 +3,6 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-.form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
-}
   
 .full-width {
   width: 100%;
@@ -39,31 +33,44 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .item {
-  width: $gutter * 28;
-  height: $gutter * 18;
+  $width-container: $gutter * 28;
+  $height-container: $gutter * 18;
+  width: $width-container;
+  height: $height-container;
   margin-bottom: $gutter * 2;
   .title {
-      font-size: 12pt;
-      word-wrap: break-word;
-      height: $gutter * 3;
+    position: relative;
+    z-index: 3;
+    font-size: 12pt;
+    word-wrap: break-word;
+    height: $gutter * 3;
   }
   .body {
-      margin: auto;
-      text-align: center;
-      .text {
-        margin-top: $gutter * 2;
-        text-align: left;
-        width: $gutter * 20;
-        height: $gutter * 8;
-      }
-      .img {
-          width: $gutter * 8;
-          height: $gutter * 8;
-          border-radius: $gutter;
-      }
+    margin: auto;
+    text-align: center;
+    .text {
+      position: relative;
+      top: $gutter * 4;
+      text-align: left;
+      width: $width-container;
+      height: $height-container;
+    }
+    .img {
+      position: relative;
+      top: -$gutter * 4;
+      left: 0;
+      z-index: 1;
+      width: $width-container;
+      height: $height-container;
+      border-radius: $gutter;
+      opacity: 0.1;
+    }
   }
   .footer {
+      position: relative;
+      top: -$gutter * 9;
       text-align: right;
+      z-index: 2;
       .link {
         text-decoration: none;
         font-weight: bold;
@@ -102,7 +109,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-dialog-container {
   max-width: $gutter * 100;
-  // background: $color-black-dark !important;
 }
 
 ::-webkit-scrollbar {

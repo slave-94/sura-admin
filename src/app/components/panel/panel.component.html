@@ -13,12 +13,15 @@
     <mat-sidenav #sidenav mode="side" opened class="side-nav" [fixedInViewport]="false" [fixedTopGap]="0"
       [fixedBottomGap]="0">
       <div class="side-options">
-        <button mat-stroked-button class="btn-opc" (click)="setInfoComponent()">Información</button>
-        <button mat-stroked-button class="btn-opc" (click)="setEventosComponent()">Eventos</button>
-        <button mat-stroked-button class="btn-opc" (click)="setGaleriaComponent()">Galería</button>
+        <button mat-stroked-button [class]="sectionSelected===0?'btn-opc-active':'btn-opc'"
+          (click)="setInfoComponent()">Información</button>
+        <button mat-stroked-button [class]="sectionSelected===1?'btn-opc-active':'btn-opc'"
+          (click)="setEventosComponent()">Eventos</button>
+        <button mat-stroked-button [class]="sectionSelected===2?'btn-opc-active':'btn-opc'"
+          (click)="setGaleriaComponent()">Galería</button>
       </div>
     </mat-sidenav>
-    
+
     <mat-sidenav-content>
       <div class="main-content">
         <ng-template section-host></ng-template>
