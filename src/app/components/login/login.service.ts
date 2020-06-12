@@ -10,7 +10,7 @@ export class LoginService {
   constructor(
     private angfireAuth: AngularFireAuth,
     private angfireDB: AngularFireDatabase
-  ) {}
+  ) { }
 
   login(user: User): Promise<any> {
     return this.angfireAuth.auth.signInWithEmailAndPassword(
@@ -19,7 +19,7 @@ export class LoginService {
     );
   }
 
-  logout() : Promise<any> {
+  logout(): Promise<any> {
     return this.angfireAuth.auth.signOut();
   }
 
@@ -71,9 +71,18 @@ export class LoginService {
       case strings.registroUsuarioErrors.emailRegistradoCode:
         return `La cuenta de correo <b>${email}</b> ${
           strings.registroUsuarioErrors.emailRegistradoMsg
-        }`;
+          }`;
       default:
         return strings.registroUsuarioErrors.defaultRegistroUsrMsg;
+    }
+  }
+
+  checkToken(): boolean {
+    const token = localStorage.getItem('token');
+    if (token) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

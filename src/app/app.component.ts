@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoginService } from './components/login/login.service';
 
 @Component({
   selector: 'app-root',
@@ -7,22 +8,15 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   
-  public logged: boolean;
-
   title = 'sura-admin';
 
-  constructor() {
-    this.checkToken();
-  }
+  constructor(
+    private _loginService: LoginService
+  ) { }
 
   checkToken() {
-    const token = localStorage.getItem('token');
-    if(token) {
-      this.logged = true;
-    } else {
-      this.logged = false;
-    }
+    return this._loginService.checkToken();
   }
-  
- 
+
+
 }

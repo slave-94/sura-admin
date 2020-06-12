@@ -1,4 +1,4 @@
-export class FormItemDialog {
+export class FormItem {
     constructor(
         public key?: string,
         public value?: any,

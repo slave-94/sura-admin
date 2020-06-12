@@ -8,6 +8,17 @@
     width: 100%;
 }
 
+.input-wopc {
+    width: 90%;
+}
+
+.btn-delete {
+    float: right;
+    margin-left: $gutter * 3;
+    color: $color-gray-light;
+    background: $color-orange;
+}
+
 .footer {
     float: right;
     .btn {
@@ -22,5 +33,20 @@
     .btn-add {
         float: right;
         color: $color-gray-light;
+        background: $color-turquoise;
     }
+}
+
+.btn-ok {
+    margin-top: $gutter;
+    margin-left: $gutter * 3;
+    color: $color-gray-light;
+    background: $color-green;
+}
+
+.btn-cancel  {
+    margin-top: $gutter;
+    margin-left: $gutter * 3;
+    color: $color-gray-light;
+    background: $color-pink-dark;
 }

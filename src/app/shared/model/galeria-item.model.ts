@@ -1,4 +1,4 @@
-export interface GaleriaItem {
+export interface IGaleriaItem {
     id?: string;
     nombre?: string;
     descripcion?: string;

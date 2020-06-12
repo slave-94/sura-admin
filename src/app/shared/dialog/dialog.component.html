@@ -18,14 +18,29 @@
 
 <div *ngIf="data.type==='form'">
     <h2 mat-dialog-title>{{data.title}}</h2>
-    <div class="header" *ngIf="!data.content.itemHasModel">
+    <div class="header" *ngIf="data.content.dynamic">
+        <mat-form-field class="input-key-value">
+            <mat-label>Type</mat-label>
+            <mat-select [(ngModel)]="type">
+                <ng-container *ngFor="let type of FORM_ITEM_TYPES">
+                    <mat-option *ngIf="type!=='select'" [value]="type">{{ type }}</mat-option>
+                </ng-container>
+            </mat-select>
+        </mat-form-field>
         <mat-form-field class="input-key-value">
             <mat-label>Key</mat-label>
-            <input matInput [(ngModel)]="key" name="key" />
+            <input matInput [(ngModel)]="key" name="key{{addedItemsCounter}}" />
         </mat-form-field>
         <mat-form-field class="input-key-value">
             <mat-label>Value</mat-label>
-            <input matInput [(ngModel)]="value" name="value" />
+            <ng-container [ngSwitch]="type">
+                <ng-container *ngSwitchCase="'text-area'">
+                    <textarea matInput [(ngModel)]="value" name="value{{addedItemsCounter}}"></textarea>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    <input matInput [type]="type" [(ngModel)]="value" name="value{{addedItemsCounter}}" />
+                </ng-container>
+            </ng-container>
         </mat-form-field>
         <button mat-icon-button class="btn-add" (click)="addItem()">
             <mat-icon>add</mat-icon>
@@ -33,33 +48,25 @@
     </div>
     <mat-dialog-content>
         <form #formFields=ngForm>
-            <mat-form-field class="input" *ngFor="let item of data.content.formItems; let i = index">
-                <mat-label>{{item.title?item.title:item.key}}</mat-label>
-                <input [type]="item.type" matInput [(ngModel)]="item.value" name="formItem{{i}}"
-                    [required]="item.required" />
-            </mat-form-field>
-        </form>
-    </mat-dialog-content>
-    <div class="footer">
-        <button mat-raised-button class="btn" color="accent" [mat-dialog-close]="data.content" [disabled]="!formFields.valid">
-            Actualizar
-        </button>
-        <button mat-raised-button class="btn" color="warn" mat-dialog-close>
-            Cancelar
-        </button>
-    </div>
-</div>
-
-<div *ngIf="data.type==='form-file'">
-    <h2 mat-dialog-title>{{data.title}}</h2>
-    <mat-dialog-content>
-        <form #formFile=ngForm>
-            <mat-form-field class="input" *ngFor="let item of data.content.formItems; let i = index">
-                <mat-label>{{item.title?item.title:item.key}}</mat-label>
-                <input [type]="item.type" matInput [(ngModel)]="item.value" [ngModelOptions]="{standalone: true}"
-                    [required]="item.required" />
-            </mat-form-field>
-            <mat-form-field class="file-galeria">
+            <ng-container *ngFor="let item of data.content.formItems; let i = index">
+                <mat-form-field [class]="data.content.dynamic?'input-wopc':'input'">
+                    <mat-label>{{item.title?item.title:item.key}}</mat-label>
+                    <ng-container [ngSwitch]="item.type">
+                        <ng-container *ngSwitchCase="'text-area'">
+                            <textarea matInput [(ngModel)]="item.value" name="formItem{{i}}"
+                                [required]="item.required"></textarea>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                            <input [type]="item.type" matInput [(ngModel)]="item.value" name="formItem{{i}}"
+                                [required]="item.required" />
+                        </ng-container>
+                    </ng-container>
+                </mat-form-field>
+                <button class="btn-delete" mat-icon-button *ngIf="data.content.dynamic" (click)="removeItem(i)">
+                    <mat-icon>remove</mat-icon>
+                </button>
+            </ng-container>
+            <mat-form-field class="file-galeria" *ngIf="data.content.imageFieldAvailable">
                 <ngx-mat-file-input placeholder="Subir imagen" accept="image/*" (change)="selectFile($event)">
                 </ngx-mat-file-input>
                 <mat-icon matSuffix>folder</mat-icon>
@@ -67,11 +74,11 @@
         </form>
     </mat-dialog-content>
     <div class="footer">
-        <button mat-raised-button class="btn" color="accent" [mat-dialog-close]="data.content"
-            [disabled]="!formFile.valid || (!data.content.image && data.content.imageRequired)">
+        <button mat-raised-button class="btn-ok" [mat-dialog-close]="data.content" [disabled]="!formFields.valid || data.content.formItems.length===0 ||
+        (!data.content.image && (data.content.imageFieldAvailable && !data.content.imageFieldOptional))">
             Actualizar
         </button>
-        <button mat-raised-button class="btn" color="warn" mat-dialog-close>
+        <button mat-raised-button class="btn-cancel" mat-dialog-close>
             Cancelar
         </button>
     </div>

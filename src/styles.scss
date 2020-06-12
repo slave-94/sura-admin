@@ -1,70 +1,114 @@
 /* You can add global styles to this file, and also import other style files */
-@import './app//variables.scss';
+@import './app/variables.scss';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-.form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
-}
   
 .full-width {
   width: 100%;
 }
 
-.add-item {
-    .label-item {
+.header-opc {
+  opacity: 0.7;
+  .item-ho {
+      width: 90%;
+      color: black;
+    }
+  .icon-ho {
+      float: right;
+      color: $color-light;
+      background: $color-gray-dark;
+  }
+}
+
+.btn-header {
+    .item-bh {
         color: $color-gray-dark;
         margin-right: $gutter;
-        // font-size: $gutter * 2;
     }
-    .btn-item {
-        width: 32px;
-        height: 32px;
-        border-radius: 100%;
+    .icon-bh {
+        color: $color-gray-light;
+        background-color: $color-green;
     }
 }
 
 .item {
-  width: $gutter * 28;
-  height: $gutter * 18;
+  $width-container: $gutter * 28;
+  $height-container: $gutter * 18;
+  width: $width-container;
+  height: $height-container;
   margin-bottom: $gutter * 2;
   .title {
-      font-size: 12pt;
-      word-wrap: break-word;
-      height: $gutter * 3;
+    position: relative;
+    z-index: 3;
+    font-size: 12pt;
+    word-wrap: break-word;
+    height: $gutter * 3;
   }
   .body {
-      margin: auto;
-      text-align: center;
-      .text {
-        margin-top: $gutter * 2;
-        text-align: left;
-        width: $gutter * 20;
-        height: $gutter * 8;
-      }
-      .img {
-          width: $gutter * 8;
-          height: $gutter * 8;
-          border-radius: $gutter;
-      }
+    margin: auto;
+    text-align: center;
+    .text {
+      position: relative;
+      top: $gutter * 4;
+      text-align: left;
+      width: $width-container;
+      height: $height-container;
+    }
+    .img {
+      position: relative;
+      top: -$gutter * 4;
+      left: 0;
+      z-index: 1;
+      width: $width-container;
+      height: $height-container;
+      border-radius: $gutter;
+      opacity: 0.1;
+    }
   }
   .footer {
+      position: relative;
+      top: -$gutter * 9;
       text-align: right;
+      z-index: 2;
       .link {
         text-decoration: none;
         font-weight: bold;
         color: $color-green-light;
         margin-right: $gutter * 2;
       }
+      .btn-attach {
+        margin-left: $gutter;
+        color: $color-light;
+        background: $color-gray-dark;
+      }
+      .btn-edit {
+        margin-left: $gutter;
+        background-color: $color-blue;
+        color: $color-gray-light;
+      }
       .btn-delete {
-          margin-left: $gutter;
-          background-color: $color-pink-dark;
-          color: $color-gray-light;
+        background-color: $color-pink-dark;
+        margin-left: $gutter;
+        color: $color-gray-light;
       }
   }
+}
+
+.mat-form-field-label {
+  color: $color-gray-dark !important;
+}
+
+.mat-form-field-underline {
+  background-color: $color-gray-dark !important;
+}
+
+.mat-form-field-ripple {
+  background-color: $color-gray-dark !important;
+}
+
+.mat-dialog-container {
+  max-width: $gutter * 100;
 }
 
 ::-webkit-scrollbar {

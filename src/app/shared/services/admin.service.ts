@@ -6,7 +6,7 @@ import { AngularFireStorage } from 'angularfire2/storage';
 import { UploadTask } from '@angular/fire/storage/interfaces';
 
 import { InfoItem } from 'src/app/shared/model/info-item.model';
-import { FormItemDialog } from 'src/app/shared/model/form-item.model';
+import { FormItem } from 'src/app/shared/dialog/form-item.model';
 
 @Injectable()
 export class AdminService {
@@ -23,21 +23,25 @@ export class AdminService {
         return this._database.createId();
     }
 
-    getFormItems(obj): FormItemDialog[] {
+    getFormItems(obj): FormItem[] {
         const formItems = [];
         const itemKeys = Object.keys(obj);
         for (var key of itemKeys) {
-            formItems.push(new FormItemDialog(key, obj[key]));
+            formItems.push(new FormItem(key, obj[key]));
         }
         return formItems;
     }
 
+    generateFormItem(key, value): FormItem[] {
+        return [new FormItem(key, value)];
+    }
+
     //merge item selected data with form data from dialog
-    addFormDataToItem(itemSelectedData, formItems): Object {
+    addFormDataToItem(itemSelectedData, formItems): any {
         return Object.assign({}, itemSelectedData, this.convertToJSON(formItems));
     }
 
-    fillForm(obj, form): FormItemDialog[] {
+    fillForm(obj, form): FormItem[] {
         const formItems = this.getFormItems(obj);
         form.forEach((item) => {
             const formItem = formItems.filter(i => i.key === item.key)[0];
@@ -54,7 +58,7 @@ export class AdminService {
         })
     }
 
-    convertToJSON(data: FormItemDialog[]) {
+    convertToJSON(data: FormItem[]) {
         let str = '{';
         data.forEach((result, index) => {
             str += `"${result.key}":"${result.value}"${(index < data.length - 1) ? ',' : ''}`
@@ -116,8 +120,8 @@ export class AdminService {
         return this._storage.ref(`${storage}/${id}`).getDownloadURL().toPromise();
     }
 
-    uploadImage(storage, image): UploadTask {
-        const id = this.generateId();
+    uploadImage(storage, image, name?: string): UploadTask {
+        const id = name ? name : this.generateId();
         const imgString = `data:image/jpeg;base64,${image}`;
         return this._storage.ref(`${storage}/${id}`).putString(imgString, "data_url").task;
     }

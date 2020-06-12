@@ -1,8 +1,8 @@
-<div *ngIf="!logged">
+<div *ngIf="!checkToken()">
   <app-login></app-login>
 </div>
 
-<div *ngIf="logged">
+<div *ngIf="checkToken()">
   <app-panel></app-panel>
 </div>
 

@@ -1,7 +1,7 @@
-<div class="add-item">
-    <mat-label class="label-item">Agregar imagen</mat-label>
-    <button mat-mini-fab (click)="addGaleriaItem()">
-        <mat-icon>save</mat-icon>
+<div class="btn-header">
+    <mat-label class="item-bh">Agregar imagen</mat-label>
+    <button mat-mini-fab class="icon-bh" (click)="addGaleriaItem()">
+        <mat-icon>add</mat-icon>
     </button>
 </div>
 
@@ -14,9 +14,6 @@
                     <img class="img" src="{{image.data.imagenUrl}}" />
                 </div>
                 <div class="footer">
-                    <!-- <button mat-mini-fab color="accent" (click)="editImage(i)">
-                        <mat-icon>visibility</mat-icon>
-                    </button> -->
                     <button mat-mini-fab class="btn-delete" (click)="deleteGaleriaItem(i)">
                         <mat-icon>delete</mat-icon>
                     </button>
