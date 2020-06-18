@@ -88,7 +88,7 @@ export class ItinerariosComponent implements OnInit {
     this.itinerario = this.itinerarios[index];
     const formItems = this._adminService.fillForm(this.itinerario, ITINERARIO_FORM);
     const formContent = { formItems: formItems };
-    this._dialogService.buildFormDialog('Editar evento', formContent)
+    this._dialogService.buildFormDialog('Editar itinerario', formContent)
       .subscribe(result => {
         if (result) {
           this.itinerario = <IItinerario>this._adminService.addFormDataToItem(this.itinerario, result.formItems);
@@ -114,7 +114,7 @@ export class ItinerariosComponent implements OnInit {
       `${ITINERARIOS_MSGS.DEL_MSG_INI} ${this.itinerario.nombre} ${ITINERARIOS_MSGS.DEL_MSG_FIN}`)
       .subscribe(result => {
         if (result) {
-          this.openLoadingDialog('Eliminando evento');
+          this.openLoadingDialog('Eliminando itinerario');
           this._adminService.deleteItem(this.collectionName, this.itinerario.id).then(
             () => {
               this.closeLoadingDialog(ITINERARIOS_MSGS.DELETE_SUCCESS, 'Ok');

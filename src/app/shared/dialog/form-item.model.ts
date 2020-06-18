@@ -4,6 +4,7 @@ export class FormItem {
         public value?: any,
         public title?: string,
         public type?: string,
+        public options?: any[],
         public required?: boolean
     ) { }
 }

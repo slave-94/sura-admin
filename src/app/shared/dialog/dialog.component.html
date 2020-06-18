@@ -52,6 +52,13 @@
                 <mat-form-field [class]="data.content.dynamic?'input-wopc':'input'">
                     <mat-label>{{item.title?item.title:item.key}}</mat-label>
                     <ng-container [ngSwitch]="item.type">
+                        <ng-container *ngSwitchCase="'select'">
+                            <mat-select [(ngModel)]="item.value" name="opc">
+                                <mat-option *ngFor="let opc of item.options; let i=index" [value]="opc">
+                                    {{ opc }}
+                                </mat-option>
+                            </mat-select>
+                        </ng-container>
                         <ng-container *ngSwitchCase="'text-area'">
                             <textarea matInput [(ngModel)]="item.value" name="formItem{{i}}"
                                 [required]="item.required"></textarea>
