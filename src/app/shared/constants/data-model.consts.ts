@@ -71,7 +71,8 @@ export const ITINERARIO_FORM: FormItem[] = [
         key: 'tipo',
         value: '',
         title: 'Tipo',
-        type: 'text',
+        type: 'select',
+        options: ["ACADEMICO", "ACOMPANIANTE", "SOCIAL"],
         required: true
     },
     {
